@@ -40,8 +40,8 @@ def getCourses(session:requests.Session, userPageUrl:str):
                 "timeSlot":list(row)[0].getText().split("  ")[1].split("-")[0].lstrip().rstrip(),
                 "roomNumber":list(row)[0].getText().split("  ")[1].split("-")[1].lstrip().rstrip(),
                 "date":list(row)[1].getText(),
-                "mark": float(list(row)[3].getText().split("current mark =")[-1].lstrip().rstrip().removesuffix('%')) if list(row)[3].getText().split("current mark =")[-1].lstrip().rstrip().removesuffix('%') != "Please see teacher for current status regarding achievement in the course" else None,
-                "url":url+"students/"+_getUrl(list(row)[3]) if list(row)[3].getText().split("current mark =")[-1].lstrip().rstrip().removesuffix('%') != "Please see teacher for current status regarding achievement in the course" else None,
+                "mark": float(list(row)[3].getText().split("current mark =")[-1].lstrip().rstrip().removesuffix('%')) if list(row)[3].getText().split("current mark =")[-1].lstrip().rstrip().removesuffix('%') else None,
+                "url":url+"students/"+_getUrl(list(row)[3]) if "Please see teacher for current status regarding achievement in the course" not in list(row)[3].getText().split("current mark =")[-1].lstrip().rstrip().removesuffix('%') else None,
             } for row in tables[_courseTableIndex(tables=tables, header=['Course Name', 'Date', 'Mark'])].findAll('tr')[1:]
         ] #
     # for row in tables[_courseTableIndex(tables=tables, header=['Course Name', 'Date', 'Mark'])].findAll('tr')[1:]: # code to see table
