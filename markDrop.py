@@ -11,7 +11,7 @@ def getLowestMarks(courseObject):
     for assignment in correctWeightCourseObject["assignment"]:
         for catagory in correctWeightCourseObject["assignment"][assignment]:
             if correctWeightCourseObject["assignment"][assignment][catagory]["mark"] != None and correctWeightCourseObject["assignment"][assignment][catagory]["weight"] != None:
-                markRating = [math.sqrt(((float(correctWeightCourseObject["assignment"][assignment][catagory]["mark"]))**2)+((1-float(correctWeightCourseObject["assignment"][assignment][catagory]["weight"]))**2)),["assignment",assignment,catagory]]
+                markRating = [math.sqrt(((1-float(correctWeightCourseObject["assignment"][assignment][catagory]["mark"]))**2)+((1-float(correctWeightCourseObject["assignment"][assignment][catagory]["weight"]))**2))-math.sqrt(((float(correctWeightCourseObject["assignment"][assignment][catagory]["mark"]))**2)+((1-float(correctWeightCourseObject["assignment"][assignment][catagory]["weight"]))**2)),["assignment",assignment,catagory]]
                 # print(markRating)
                 markList.append(markRating)
     sortedMarkList = sorted(markList, key=lambda x: x[0])
@@ -20,8 +20,8 @@ def getLowestMarks(courseObject):
 def removeLowestMark(courseObject):
     updatedCourseObject = copy.deepcopy(courseObject)
     markList = getLowestMarks(courseObject)
-    updatedCourseObject[markList[0][1][0]][markList[0][1][1]][markList[0][1][2]]["mark"] = None
-    updatedCourseObject[markList[0][1][0]][markList[0][1][1]][markList[0][1][2]]["weight"] = None
+    updatedCourseObject[markList[-1][1][0]][markList[-1][1][1]][markList[-1][1][2]]["mark"] = None
+    updatedCourseObject[markList[-1][1][0]][markList[-1][1][1]][markList[-1][1][2]]["weight"] = None
     return updatedCourseObject
 if __name__ == '__main__':
     with requests.Session() as s:
@@ -38,5 +38,5 @@ if __name__ == '__main__':
         for markDrop in range(int(input("Amount of marks dropped: "))):
             buffer = newMarks
             newMarks = removeLowestMark(buffer)
-            print(getLowestMarks(buffer)[0][1])
+            print(getLowestMarks(buffer)[-1][1])
             print(markCalc.getCourseMark(courseObject=newMarks))
