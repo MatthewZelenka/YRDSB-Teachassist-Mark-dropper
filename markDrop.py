@@ -28,7 +28,7 @@ if __name__ == '__main__':
         responseData = webInterface.login(session=s, username=input('username: '), password=getpass.getpass(prompt='password: '))
         # print(responseData.url)
         coursesData = webInterface.getCourses(session=s, userPageUrl=responseData.url)
-        print(coursesData)
+        # print(coursesData)
         coursesDataWithUrls = [course for course in coursesData if coursesData[coursesData.index(course)]["url"] != None]
         for course in coursesData:
             print((str(coursesDataWithUrls.index(course))+") " if course in coursesDataWithUrls else "")+course["courseCode"])
